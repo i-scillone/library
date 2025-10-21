@@ -1,7 +1,21 @@
 <?php
+/**
+ * Crea i campi di un form e li riempie.
+ */
 class Form
-{   private $data=[];
+{
+    /**
+     * Dati con cui riempire i campi del form.
+     * 
+     * @var array
+     */
+    private $data=[];
 
+    /**
+     * Crea l'oggetto Form.
+     * 
+     * @param array $data Dati con cui riempire i campi del form.
+     */
     public function __construct(array $data=[])
     {
         $this->data=$data;
@@ -14,6 +28,15 @@ class Form
         }
         return rtrim($buf).'>';
     }
+    /**
+     * Crea un campo testo o checkbox.
+     * 
+     * @param string $name Nome del campo.
+     * @param string $type Tipo del campo.
+     * @param array $attributes Eventuali attributi del campo, in un array associativo.
+     * 
+     * @return string Stringa contenente il campo del form.
+     */
     public function input(string $name,string $type='text',array $attributes=[])
     {
         $buf="<input id=\"{$name}\" name=\"{$name}\" type=\"{$type}\" ";
