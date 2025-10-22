@@ -82,7 +82,7 @@ class Form
             if (isset($this->data[$name]) && $this->data[$name]==$k) {
                 $buf.='checked ';
             }
-            $this->finalize($buf,$attributes).'&nbsp;'.htmlspecialchars($v).' ';
+            $buf.=$this->finalize($buf,$attributes).'&nbsp;'.htmlspecialchars($v).' ';
         }
         return $buf;
     }
