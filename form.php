@@ -20,13 +20,19 @@ class Form
     {
         $this->data=$data;
     }
-    private function finalize(string $buf,array $attributes)
+    /**
+     * Gestisce gli attributi e chiude il tag HTML.
+     * 
+     * @param string $buf Buffer contenente la prima parte del tag.
+     * @param array $attributes Gli attributi oltre quelli fondamentali.
+     */
+    private function finalize(string &$buf,array $attributes):void
     {
         if ($attributes) foreach ($attributes as $k=>$v) {
             if ($v===true) $buf.=$k.' ';
             elseif (!is_bool($v)) $buf.=sprintf('%s="%s" ',$k,htmlspecialchars($v));
         }
-        return rtrim($buf).'>';
+        $buf=trim($buf).'>';
     }
     /**
      * Crea un campo testo o checkbox.
@@ -52,6 +58,15 @@ class Form
         }
         return $this->finalize($buf,$attributes);
     }
+    /**
+     * Crea un insieme di bottoni radio.
+     * 
+     * @param string $name Nome del campo.
+     * @param array $values Valori selezionabili, contenuti in un array associativo.
+     * @param array $attributes Eventuali attributi del campo, in un array associativo.
+     * 
+     * @return string Stringa contenente il campo del form.
+     */
     public function radio(string $name, array $values, array $attributes=[])
     {
         $buf='';
@@ -66,5 +81,19 @@ class Form
             $buf=$this->finalize($buf,$attributes).'&nbsp;'.htmlspecialchars($v).' ';
         }
         return $buf;
+    }
+    /**
+     * Crea una textarea
+     * 
+     * @param string $name Nome del campo.
+     * @param array $attributes Eventuali attributi del campo, in un array associativo.
+     * 
+     * @return string Stringa contenente il campo del form.
+     */
+    public function textarea(string $name, array $attributes=[])
+    {
+        $buf="<textarea id=\"{$name}\" name=\"{$name}\" ";
+        $this->finalize($buf,$attributes);
+        return $buf.htmlspecialchars($this->data[$name]).'</textarea>';
     }
 }
