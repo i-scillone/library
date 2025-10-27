@@ -115,4 +115,20 @@ class Debug
         if ($view) echo "<pre class='{$this->class}'>{$buf}</pre>\n";
         return $buf;
     }
+    /**
+     * Fa il dump nella console del browser.
+     * 
+     * @param array $vars Le variabili di cui fare il dump.
+     */
+    public function toConsole(...$vars): void
+    {
+        $trace=debug_backtrace();
+        $label=json_encode(basename($trace[0]['file']).':'.$trace[0]['line']);
+        echo "<script>\n";
+        foreach ($vars as $v) {
+            $escaped=str_replace('</', '<\/',json_encode($v,JSON_UNESCAPED_SLASHES));
+            echo "console.log({$label},{$escaped});\n";
+        }
+        echo "</script>\n";
+    }
 }

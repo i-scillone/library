@@ -30,6 +30,7 @@ $debug=new Debug(class: 'dbg');
         <p><button name="doIt" type="submit" class="btn btn-secondary">Engage!</button></p>
     </form>
 <?php
+$debug->toConsole($_REQUEST);
 $debug->log($_POST);
 $obj=new Exception();
 $debug->dump($_POST,true,1701,$obj);
