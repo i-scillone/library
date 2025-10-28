@@ -1,4 +1,6 @@
 <?php
+namespace MyClasses;
+
 /**
  * Crea i campi di un form e li riempie.
  */

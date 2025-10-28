@@ -15,11 +15,11 @@
 </head>
 <body>
 <?php
-require 'form.php';
-require 'debug.php';
+ini_set('display_errors','on');
+require 'lib/autoloader.php';
 
-$form=new Form($_REQUEST,$_POST,$_GET);
-$debug=new Debug(class: 'dbg');
+$form=new \MyClasses\Form($_REQUEST,$_POST,$_GET);
+$debug=new \MyClasses\Debug(class: 'dbg');
 ?>
 <div class="container">
     <form method="post">
