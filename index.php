@@ -17,6 +17,25 @@
 <?php
 ini_set('display_errors','on');
 require 'lib/autoloader.php';
+class Person
+{
+    private $name;
+    private $surname;
+
+    public function __construct(string $surname,string $name)
+    {
+        $this->name=$name;
+        $this->surname=$surname;
+    }
+    public function getFullName(): string
+    {
+        return $this->name.' '.mb_strtoupper($this->surname);
+    }
+    public function __toString()
+    {
+        return $this->getFullName();
+    }
+}
 
 $form=new \MyClasses\Form($_REQUEST,$_POST,$_GET);
 $debug=new \MyClasses\Debug(class: 'dbg');
@@ -26,6 +45,7 @@ $debug=new \MyClasses\Debug(class: 'dbg');
         <p>Cognome: <?= $form->input('cognome','text',['class'=>'form-control']) ?></p>
         <p>Nome: <?= $form->input('nome','text',['class'=>'form-control']) ?></p>
         <p>Sesso: <?= $form->radio('sesso',['m'=>'maschio','f'=>'femmina'],['class'=>'form-check-input']) ?></p>
+        <p>Data di nasciata: <?= $form->input('nascita','date',['class'=>'form-control']) ?></p>
         <p>VIP? <?= $form->input('vip','checkbox',['class'=>'form-check-input']) ?></p>
         <p><button name="doIt" type="submit" class="btn btn-secondary">Engage!</button></p>
     </form>
@@ -33,9 +53,9 @@ $debug=new \MyClasses\Debug(class: 'dbg');
 $debug->toConsole($_REQUEST);
 $debug->log($_POST);
 $obj=new Exception();
-$debug->dump($_POST,true,1701,$obj);
-$debug->inspect($obj);
-$obj=(object)['name'=>'Sherlock','surname'=>'Holmes'];
+$p=new Person('Holmes','Sherlock');
+$debug->dump($_POST,true,1701,"Nome e cognome: $p");
+$debug->inspect($p);
 $debug->log($debug->inspect($obj,false));
 ?>
 </div>

@@ -68,7 +68,9 @@ class Debug
         echo "<pre class='{$this->class}'>⟨".basename($trace[0]['file']).':'
             .$trace[0]['line']."⟩\n";
         foreach ($vars as $v) {
-            echo '⟨'.gettype($v).'⟩ ';
+            $t=gettype($v);
+            if ($t=='object') $t=get_class($v).' object';
+            echo "⟨{$t}⟩ ";
             if (is_scalar($v)) {
                 echo json_encode($v,JSON_UNESCAPED_SLASHES);
             } else {
@@ -100,7 +102,10 @@ class Debug
             $buf.='⟨None⟩';
         } else {
             foreach ($list as $item) {
-                $buf.=$item->getName().', ';
+                $name=$item->getName();
+                if ($item->isPrivate()) $name.='⟨private⟩';
+                elseif ($item->isProtected()) $name.='⟨protected⟩';
+                $buf.=$name.', ';
             }
         }
         $buf=rtrim($buf,', ').PHP_EOL;
@@ -110,7 +115,10 @@ class Debug
             $buf.='⟨None⟩';
         } else {
             foreach ($list as $item) {
-                $buf.=$item->getName().', ';
+                $name=$item->getName();
+                if ($item->isPrivate()) $name.='⟨private⟩';
+                elseif ($item->isProtected()) $name.='⟨protected⟩';
+                $buf.=$name.', ';
             }
         }
         $buf=rtrim($buf,', ').PHP_EOL;
