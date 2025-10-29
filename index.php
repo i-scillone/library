@@ -7,7 +7,7 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
     <style>
     .dbg { 
-        color: #00ff00; 
+        color: #ffffff; 
         background: black;
         padding: 0 4px;
     }
@@ -39,24 +39,27 @@ class Person
 
 $form=new \MyClasses\Form($_REQUEST,$_POST,$_GET);
 $debug=new \MyClasses\Debug(class: 'dbg');
+$db=new \MyClasses\DB('sqlite:magistrati.sqlite');
 ?>
 <div class="container">
     <form method="post">
         <p>Cognome: <?= $form->input('cognome','text',['class'=>'form-control']) ?></p>
         <p>Nome: <?= $form->input('nome','text',['class'=>'form-control']) ?></p>
         <p>Sesso: <?= $form->radio('sesso',['m'=>'maschio','f'=>'femmina'],['class'=>'form-check-input']) ?></p>
-        <p>Data di nasciata: <?= $form->input('nascita','date',['class'=>'form-control']) ?></p>
+        <p>Data di nascita: <?= $form->input('nascita','date',['class'=>'form-control']) ?></p>
         <p>VIP? <?= $form->input('vip','checkbox',['class'=>'form-check-input']) ?></p>
-        <p><button name="doIt" type="submit" class="btn btn-secondary">Engage!</button></p>
+        <p><button name="doIt" type="submit" class="btn btn-primary">Engage!</button></p>
     </form>
 <?php
-$debug->toConsole($_REQUEST);
-$debug->log($_POST);
-$obj=new Exception();
-$p=new Person('Holmes','Sherlock');
-$debug->dump($_POST,true,1701,"Nome e cognome: $p");
-$debug->inspect($p);
-$debug->log($debug->inspect($obj,false));
+$debug->log($_REQUEST);
+$now=new DateTimeImmutable();
+$debug->log($debug->inspect($now,false));
+$per=new Person($_POST['cognome'],$_POST['nome']);
+$debug->log($per);
+$debug->inspect($per);
+$debug->dump($now,$per);
+$sel=$db->query("SELECT cod,cognome||' '||nome FROM pri");
+$debug->dump($sel->toAssoc());
 ?>
 </div>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js" integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI" crossorigin="anonymous"></script>

@@ -38,6 +38,23 @@ class Debug
         return $this->logFile;
     }
     /**
+     * Miglioramento di gettype()
+     * 
+     * Se la variabile è un oggetto restituisce anche il nome della sua classe
+     * 
+     * @param mixed $x La variabile da analizzare
+     * 
+     * @return string
+     */
+    private function getType($x): string
+    {
+        $t=gettype($x);
+        if ($t=='object') {
+            $t=get_class($x).' object';
+        }
+        return '⟨'.$t.'⟩';
+    }
+    /**
      * Registra nel Log un'informazione.
      * 
      * @param mixed $x Il dato da registrare
@@ -52,6 +69,7 @@ class Debug
         if (is_scalar($x) && !is_bool($x)) {
             fwrite($f,$x);
         } else {
+            fwrite($f,$this->getType($x).' ');
             fwrite($f,json_encode($x,JSON_UNESCAPED_SLASHES|JSON_PRETTY_PRINT));
         }
         fwrite($f,PHP_EOL);
@@ -68,9 +86,7 @@ class Debug
         echo "<pre class='{$this->class}'>⟨".basename($trace[0]['file']).':'
             .$trace[0]['line']."⟩\n";
         foreach ($vars as $v) {
-            $t=gettype($v);
-            if ($t=='object') $t=get_class($v).' object';
-            echo "⟨{$t}⟩ ";
+            echo $this->getType($v).' ';
             if (is_scalar($v)) {
                 echo json_encode($v,JSON_UNESCAPED_SLASHES);
             } else {
@@ -95,33 +111,31 @@ class Debug
     public function inspect(object $x, bool $view=true): string
     {
         $ref=new \ReflectionObject($x);
-        $buf='Class: '.$ref->getName().PHP_EOL;
-        $buf.='Properties: ';
+        $buf="Class: {$ref->getName()}\n";
+        $buf.="Properties:\n";
         $list=$ref->getProperties();
         if (!$list) {
-            $buf.='⟨None⟩';
+            $buf.="    ⟨None⟩\n";
         } else {
             foreach ($list as $item) {
                 $name=$item->getName();
-                if ($item->isPrivate()) $name.='⟨private⟩';
-                elseif ($item->isProtected()) $name.='⟨protected⟩';
-                $buf.=$name.', ';
+                if ($item->isPrivate()) $name.=' ⟨private⟩';
+                elseif ($item->isProtected()) $name.=' ⟨protected⟩';
+                $buf.="    $name\n";
             }
         }
-        $buf=rtrim($buf,', ').PHP_EOL;
-        $buf.='Methods: ';
+        $buf.="Methods:\n";
         $list=$ref->getMethods();
         if (!$list) {
-            $buf.='⟨None⟩';
+            $buf.="    ⟨None⟩\n";
         } else {
             foreach ($list as $item) {
                 $name=$item->getName();
                 if ($item->isPrivate()) $name.='⟨private⟩';
                 elseif ($item->isProtected()) $name.='⟨protected⟩';
-                $buf.=$name.', ';
+                $buf.="    $name\n";
             }
         }
-        $buf=rtrim($buf,', ').PHP_EOL;
         if ($view) echo "<pre class='{$this->class}'>{$buf}</pre>\n";
         return $buf;
     }
