@@ -20,4 +20,21 @@ class DBStatement extends \PDOStatement
         }
         return $r;
     }
+    /**
+     * Fa il bindValue() su valori che potrebbero essere nulli.
+     * 
+     * Se il valore passato al metodo è una stringa vuota passa NULL, altrimenti
+     * usa il valore ed il tipo passati come argomenti.
+     * 
+     * @inheritDoc
+     */
+    public function bindNullable(string|int $param, mixed $value, int $type = DB::PARAM_STR): bool
+    {
+        if ($value=='') {
+            $r=$this->bindValue($param,null,DB::PARAM_NULL);
+        } else {
+            $r=$this->bindValue($param,$value,$type);
+        }
+        return $r;
+    }
 }
