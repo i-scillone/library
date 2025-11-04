@@ -17,7 +17,7 @@ class Debug
      * @param string $logFile Path e nome del file in cui scrivere il Log.
      * @param string $class Classe da usare per varDump.
      */
-    public function __construct(string $logFile='', string $class='')
+    public function __construct(string $logFile='', string $className='')
     {
         $trace=debug_backtrace();
 
@@ -26,7 +26,7 @@ class Debug
         } else {
             $this->logFile=$logFile;
         }
-        $this->class=$class;
+        $this->class=$className;
     }
     /**
      * Legge la proprietà logFile
