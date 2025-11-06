@@ -8,7 +8,7 @@ namespace MyClasses;
  * 
  * @package MyClasses
  */
-class dirEntry
+class DirEntry
 {
     /** @var string Percorso+nome del file o della directory */
     public $path;
