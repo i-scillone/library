@@ -20,24 +20,24 @@ class DB extends \PDO
     /**
      * Crea una connessione a più database
      * 
-     * Dato un oggetto contente un serie di DSN relativi a DB SQLite,
+     * Dato un oggetto contente un serie di riferimenti a file SQLite,
      * restituisce un connessione al primo DB della serie con "attaccati" i
      * seguenti
      * 
-     * @param array $x Array contenente una serie di DSN.
+     * @param array $x Array dei files SQLite.
      * 
      * @return object Connessione.
      */
     public static function fromArray(array $x)
     {
         foreach ($x as $i=>$item) {
-            if (!preg_match('/^sqlite:(.+)\.(.*)$/i',$item,$found)) {
+            if (!preg_match('/^(.+)\.(.*)$/i',basename($item),$found)) {
                 return false;
             }
             if ($i==0) {
-                $conn=new static($item);
+                $conn=new static('sqlite:'.$item);
             } else {
-                $conn->exec("ATTACH DATABASE '{$found[1]}' AS {$found[2]}");
+                $conn->exec("ATTACH DATABASE '{$item}' AS {$found[1]}");
             }
         }
         return $conn;
