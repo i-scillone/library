@@ -18,6 +18,31 @@ class DB extends \PDO
         $this->setAttribute(SELF::ATTR_STATEMENT_CLASS,['\MyClasses\DBStatement']);
     }
     /**
+     * Crea una connessione a più database
+     * 
+     * Dato un oggetto contente un serie di DSN relativi a DB SQLite,
+     * restituisce un connessione al primo DB della serie con "attaccati" i
+     * seguenti
+     * 
+     * @param array $x Array contenente una serie di DSN.
+     * 
+     * @return object Connessione.
+     */
+    public static function fromArray(array $x)
+    {
+        foreach ($x as $i=>$item) {
+            if (!preg_match('/^sqlite:(.+)\.(.*)$/i',$item,$found)) {
+                return false;
+            }
+            if ($i==0) {
+                $conn=new static($item);
+            } else {
+                $conn->exec("ATTACH DATABASE '{$found[1]}' AS {$found[2]}");
+            }
+        }
+        return $conn;
+    }
+    /**
      * Converte una tabella in un array associativo.
      * 
      * @param string $query Query che restituisce due colonne di una tabella:
