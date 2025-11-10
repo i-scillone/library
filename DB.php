@@ -6,14 +6,27 @@ class DB extends \PDO
     /**
      * Crea l'oggetto DB
      * 
-     * Crea un oggetto usando il costruttore padre e setta il DEFAULT_FETCH_MODE
-     * a FETCH_NUM
+     * Crea un oggetto usando il costruttore padre, setta il DEFAULT_FETCH_MODE
+     * a FETCH_NUM ed estende la classe PDOStatement. Se $dsn è un array assume 
+     * che si tratti di un elenco di file SQLite, usa il primo per creare la
+     * connessione ed i successivi come "attachments"
      * 
      * @inheritDoc
      */
-    public function __construct(string $dsn, ?string $user=null, ?string $pw=null, ?array $opts=null)
+    public function __construct(string|array $dsn, ?string $user=null, ?string $pw=null, ?array $opts=null)
     {
-        parent::__construct($dsn,$user,$pw,$opts);
+        if (is_array($dsn)) {
+            foreach ($dsn as $i=>$item) {
+                $name=pathinfo($item,PATHINFO_FILENAME);
+                if ($i==0) {
+                    parent::__construct('sqlite:'.$item);
+                } else {
+                    $this->exec("ATTACH DATABASE '{$item}' AS {$name}");
+                }
+            }
+        } else {
+            parent::__construct($dsn,$user,$pw,$opts);
+        }
         $this->setAttribute(SELF::ATTR_DEFAULT_FETCH_MODE,SELF::FETCH_NUM);
         $this->setAttribute(SELF::ATTR_STATEMENT_CLASS,['\MyClasses\DBStatement']);
     }
