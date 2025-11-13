@@ -21,6 +21,26 @@ class DBStatement extends \PDOStatement
         return $r;
     }
     /**
+     * Estrae le colonne della tabella.
+     * 
+     * Restituisce una serie di array ciascuno contenente i valori di ogni 
+     * colonna.
+     * 
+     * @param int $mode Modalità di estrazione delle righe.
+     * 
+     * @return array<string, scalar[]>|array<int, scalar[]> Colonne del risultato.
+     */
+    public function toColumns(int $mode=DB::FETCH_DEFAULT): array
+    {
+        $rows=$this->fetchAll($mode);
+        $keys=array_keys($rows[0]);
+        $r=[];
+        foreach ($keys as $k) {
+            $r[$k]=array_column($rows,$k);
+        }
+        return $r;
+    }
+    /**
      * Fa il bindValue() su valori che potrebbero essere nulli.
      * 
      * Se il valore passato al metodo è una stringa vuota passa NULL, altrimenti
