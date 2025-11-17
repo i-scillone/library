@@ -57,4 +57,19 @@ class DBStatement extends \PDOStatement
         }
         return $r;
     }
+    /**
+     * Elenca i nomi delle colonne.
+     * 
+     * @return array<string> I nomi delle colonne
+     */
+    public function getColumnNames(): array
+    {
+        $tot=$this->columnCount();
+        $r=[];
+        for ($n=0; $n<$tot; $n++) {
+            $inf=$this->getColumnMeta($n);
+            $r[]=$inf['name'];
+        }
+        return $r;
+    }
 }
