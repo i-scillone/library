@@ -9,7 +9,8 @@ class DB extends \PDO
      * Crea l'oggetto, setta il DEFAULT_FETCH_MODE a FETCH_NUM e permette 
      * l'estensione di PDOStatement. Se $dsn è un array assume che si tratti di 
      * un elenco di file SQLite, usa il primo per creare la connessione ed i 
-     * successivi come "attachments"
+     * successivi come "attachments". I path dei files SQLite devono essere
+     * assoluti!
      * 
      * @inheritDoc
      */
