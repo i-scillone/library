@@ -28,6 +28,7 @@ class DB extends \PDO
         } else {
             parent::__construct($dsn,$user,$pw,$opts);
         }
+        $this->setAttribute(SELF::ATTR_ERRMODE,SELF::ERRMODE_EXCEPTION);
         $this->setAttribute(SELF::ATTR_DEFAULT_FETCH_MODE,SELF::FETCH_NUM);
         $this->setAttribute(SELF::ATTR_STATEMENT_CLASS,['\MyClasses\DBStatement']);
     }
