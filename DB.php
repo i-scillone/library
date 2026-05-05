@@ -4,7 +4,7 @@ namespace MyClasses;
 class DB extends \PDO
 {
     /**
-     * Crea l'oggetto DB
+     * Crea l'oggetto DB.
      * 
      * Crea l'oggetto, setta il DEFAULT_FETCH_MODE a FETCH_NUM e permette 
      * l'estensione di PDOStatement. Se $dsn è un array assume che si tratti di 
@@ -50,5 +50,14 @@ class DB extends \PDO
             $r[$row[0]]=$row[1];
         }
         return $r;
+    }
+    /**
+     * Chiama il costruttore DBTable.
+     * 
+     * @param $tableName Nome della tabella.
+     */
+    public function getTable(string $tableName)
+    {
+        return new DBTable($this,$tableName);
     }
 }
