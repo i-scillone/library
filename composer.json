@@ -1,0 +1,8 @@
+{
+    "name": "ivan/my_classes",
+    "autoload": {
+        "psr-4": {
+            "MyClasses\\": "src/"
+        }
+    }
+}
