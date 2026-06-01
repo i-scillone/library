@@ -10,6 +10,7 @@ class Net
     }
     public static function pathOnServer(): string
     {
-        return self::serverUrl().dirname($_SERVER['PHP_SELF']);
+        return self::serverUrl().
+               rtrim(dirname($_SERVER['PHP_SELF']),'/');
     }
 }
