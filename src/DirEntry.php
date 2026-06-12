@@ -1,6 +1,8 @@
 <?php
 namespace MyClasses;
 
+use Exception;
+
 /**
  * Rappresenta un file o una directory.
  * 
@@ -31,7 +33,8 @@ class DirEntry
     public function __construct(string $path)
     {
         $this->path=$path;
-        $stat=stat($path);
+        $stat=@stat($path);
+        if ($stat===false) throw new Exception('File or directory not found!');
         $this->mode=$stat['mode'];
         $this->size=$stat['size'];
         $this->time=$stat['mtime'];
