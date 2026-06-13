@@ -61,7 +61,7 @@ class Debug
      */
     public function log(mixed $x): void
     {
-        $now=new \DateTimeImmutable();
+        $now=new \DateTimeImmutable('now',new \DateTimeZone('Europe/Rome'));
         $trace=debug_backtrace();
         $f=fopen($this->logFile,'a');
         fwrite($f,$now->format('⟨d M, H:i:s.u⟩ '));
