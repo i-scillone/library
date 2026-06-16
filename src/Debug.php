@@ -38,6 +38,15 @@ class Debug
         return $this->logFile;
     }
     /**
+     * Cancella il file di log
+     *
+     * @return void
+     */
+    public function clear(): void
+    {
+        if (file_exists($this->logFile)) unlink($this->logFile);
+    }
+    /**
      * Miglioramento di gettype()
      * 
      * Se la variabile è un oggetto restituisce anche il nome della sua classe
