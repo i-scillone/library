@@ -62,7 +62,7 @@ class DirEntry
      */
     public function getMode(): string
     {
-        if ($this->mode===false) return '??????????';
+        if ($this->mode===false) return '?';
         $r='----------';
         if ($this->mode & 040000) $r[0]='d';
         if ($this->mode & 0400) $r[1]='r';
