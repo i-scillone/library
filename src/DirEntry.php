@@ -96,6 +96,7 @@ class DirEntry
      */
     public function getSize(): string
     {
+        if ($this->size===false) return '?';
         if ($this->size/1000000000) {
             $u='GB';
             $s=$this->size/1000000000;
@@ -121,6 +122,7 @@ class DirEntry
      */
     public function getTime(): string
     {
+        if ($this->time===false) return '?';
         $ita=new \IntlDateFormatter('it_IT',\IntlDateFormatter::MEDIUM,\IntlDateFormatter::MEDIUM,'Europe/Rome');
         return $ita->format($this->time);
     }
