@@ -34,10 +34,13 @@ class DirEntry
     {
         $this->path=$path;
         $stat=@stat($path);
-        if ($stat===false) throw new Exception('File or directory not found!');
-        $this->mode=$stat['mode'];
-        $this->size=$stat['size'];
-        $this->time=$stat['mtime'];
+        if ($stat===false) {
+            $this->mode=$this->size=$this->time=false;
+        } else {
+            $this->mode=$stat['mode'];
+            $this->size=$stat['size'];
+            $this->time=$stat['mtime'];
+        }
     }
     /**
      * Estrae il nome del file senza il path.
@@ -59,6 +62,7 @@ class DirEntry
      */
     public function getMode(): string
     {
+        if ($this->mode===false) return '??????????';
         $r='----------';
         if ($this->mode & 040000) $r[0]='d';
         if ($this->mode & 0400) $r[1]='r';
