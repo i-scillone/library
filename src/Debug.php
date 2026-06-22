@@ -61,7 +61,7 @@ class Debug
         if ($t=='object') {
             $t=get_class($x).' object';
         }
-        return '⟨'.$t.'⟩';
+        return '['.$t.']';
     }
     /**
      * Registra nel Log un'informazione.
@@ -73,8 +73,8 @@ class Debug
         $now=new \DateTimeImmutable('now',new \DateTimeZone('Europe/Rome'));
         $trace=debug_backtrace();
         $f=fopen($this->logFile,'a');
-        fwrite($f,$now->format('⟨d M, H:i:s.u⟩ '));
-        fprintf($f,'⟨%s:%d⟩ ',basename($trace[0]['file']),$trace[0]['line']);
+        fwrite($f,$now->format('[d M, H:i:s.u] '));
+        fprintf($f,'[%s:%d] ',basename($trace[0]['file']),$trace[0]['line']);
         if (is_scalar($x) && !is_bool($x)) {
             fwrite($f,$x);
         } else {
