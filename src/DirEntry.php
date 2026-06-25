@@ -172,7 +172,7 @@ class DirEntry
             $inf=posix_getpwuid($this->uid);
             $r=$inf['name'];
             $inf=posix_getgrgid($this->gid);
-            $r.=':'.$inf;
+            $r.=':'.$inf['name'];
         }
         return $r;
     }
