@@ -142,37 +142,12 @@ class DirEntry
     public function getOwner(): string
     {
         if (PHP_OS_FAMILY === 'Windows') {
-            // WMI richiede i percorsi con i doppi backslash per l'escape nelle query
-            $escapedPath = str_replace('\\', '\\\\', realpath($this->path));
-            try {
-                // Ci colleghiamo al servizio WMI locale
-                $wmi = new \COM("winmgmts:{impersonationLevel=impersonate}!\\\\.\\root\\cimv2");
-                // Interroghiamo la sicurezza del file
-                $query = "SELECT * FROM Win32_LogicalFileSecuritySetting WHERE Name = '{$escapedPath}'";
-                $securitySettings = $wmi->ExecQuery($query);
-                foreach ($securitySettings as $setting) {
-                    // Otteniamo il descrittore di sicurezza
-                    $objMethod = $setting->Methods_("GetSecurityDescriptor");
-                    $outParams = $setting->ExecMethod_("GetSecurityDescriptor");
-                    if ($outParams->ReturnValue == 0) {
-                        // Estraiamo il proprietario (Owner) dal descrittore
-                        $owner = $outParams->Descriptor->Owner;
-                        // Il nome completo sarà composto da DOMINIO\NomeUtente o COMPUTER\NomeUtente
-                        $ownerName = $owner->Name;
-                        $domain = $owner->Domain;
-                        $r="Proprietario: ".$domain."\\".$ownerName;
-                    } else {
-                        $r="?";
-                    }
-                }
-            } catch (Exception $e) {
-                $r='?';
-            }
+            $r='?:?';
         } else {
             $inf=posix_getpwuid($this->uid);
             $r=$inf['name'];
             $inf=posix_getgrgid($this->gid);
-            $r.=':'.$inf;
+            $r.=':'.$inf['name'];
         }
         return $r;
     }
