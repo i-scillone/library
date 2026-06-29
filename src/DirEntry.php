@@ -135,14 +135,15 @@ class DirEntry
     /**
      * Fornisce il proprietario del file.
      * 
-     * Su Windows fornisce il proprietario del file, su Linux anche il gruppo. 
+     * Su Linux restituisce prop. e gruppo del file,
+     * su Windows restituisce ???:???.
      * 
      * @return string Proprietario e gruppo.
      */
     public function getOwner(): string
     {
         if (PHP_OS_FAMILY === 'Windows') {
-            $r='?:?';
+            $r='???:???';
         } else {
             $inf=posix_getpwuid($this->uid);
             $r=$inf['name'];
