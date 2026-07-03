@@ -14,6 +14,8 @@ class DirEntry
 {
     /** @var string Percorso+nome del file o della directory */
     public $path;
+    /** @var string Nome del file (senza percorso) */
+    public $name;
     /** @var int Permessi in formato numerico */
     public $mode;
     /** @var int Dimensione in Byte */
@@ -37,6 +39,7 @@ class DirEntry
     public function __construct(string $path)
     {
         $this->path=$path;
+        $this->name=basename($path);
         $stat=@stat($path);
         if ($stat===false) {
             $this->mode=$this->size=$this->time=false;
@@ -51,13 +54,14 @@ class DirEntry
     /**
      * Estrae il nome del file senza il path.
      * 
-     * Restituisce il basename() del file.
+     * Restituisce il basename() del file. Questa funzione esiste solo per
+     * mantenere la compatibilità con la versione precedente.
      * 
      * @return string Nome del file.
      */
     public function getName(): string
     {
-        return basename($this->path);
+        return $this->name;
     }
     /**
      * Rende leggibili i permessi del file o della directory.
