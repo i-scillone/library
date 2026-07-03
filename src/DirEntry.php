@@ -87,6 +87,17 @@ class DirEntry
         return $r;
     }
     /**
+     * Determina se è una directory.
+     * 
+     * Restituisce true se l'elemento è una directory.
+     * 
+     * @return bool True se è una directory, False se non lo è.
+     */
+    public function isDir(): bool
+    {
+        return ($this->mode & 040000)!==0;
+    }
+    /**
      * Estrae l'estensione.
      * 
      * Estrae l'estensione dal nome del file o della directory.
