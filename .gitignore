@@ -4,3 +4,4 @@ git.php
 test.php
 *.sql
 *.sqlite
+*.db

@@ -60,4 +60,34 @@ class DB extends \PDO
     {
         return new DBTable($this,$tableName);
     }
+    /**
+     * Data ISO in data italiana.
+     * 
+     * Converte una data in formato ISO in una data in formato italiano.
+     * 
+     * @param string $iso Data in formato YYYY-MM-DD.
+     * 
+     * @return string Data in formato DD-MM-YYYY o False in caso d'errore.
+     */
+    public function fromISO(string $iso): string|bool
+    {
+        $r=preg_match('/^(\\d{4})-(\\d{2})-(\\d{2})/',$iso,$found);
+        if ($r) return $found[3].'-'.$found[2].'-'.$found[1];
+        else return false;
+    }
+    /**
+     * Data italiana in formato ISO.
+     * 
+     * Converte una data italiana in formato ISO.
+     * 
+     * @param string $loc Data in formato DD-MM-YYYY o DD/MM/YYYY.
+     * 
+     * @return string Data in formato YYYY-MM-DD o False in caso d'errore.
+     */
+    public function toISO(string $loc): string|bool
+    {
+        $r=preg_match('#^(\\d{2})[/-](\\d{2})[/-](\\d{4})#',$loc,$found);
+        if ($r) return $found[3].'-'.$found[2].'-'.$found[1];
+        else return false;
+    }
 }
