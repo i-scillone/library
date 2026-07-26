@@ -79,7 +79,7 @@ class Debug
             fwrite($f,$x);
         } else {
             fwrite($f,$this->getType($x).' ');
-            fwrite($f,json_encode($x,JSON_UNESCAPED_SLASHES|JSON_PRETTY_PRINT));
+            fwrite($f,json_encode($x,JSON_UNESCAPED_SLASHES|JSON_PRETTY_PRINT|JSON_UNESCAPED_UNICODE));
         }
         fwrite($f,PHP_EOL);
         fclose($f);
