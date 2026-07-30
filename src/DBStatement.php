@@ -4,6 +4,21 @@ use \MyClasses\DB;
 
 class DBStatement extends \PDOStatement
 {
+    /** @var array<int|string> Valori equivalenti a NULL. */
+    private array $equivalentToNull = [''];
+
+    /**
+     * Personalizza la lista dei valori equivalenti a NULL.
+     * 
+     * Imposta la proprietà che bindNullable() userà per determinare se il
+     * valore da inserire nel DB è NULL.
+     * 
+     * @param int|string ...$x Elenco dei valori equivalenti a NULL.
+     */
+    public function setNull(int|string ...$x): void
+    {
+        $this->equivalentToNull = $x;
+    }
     /**
      * Converte una tabella in un array associativo.
      * 
@@ -50,7 +65,7 @@ class DBStatement extends \PDOStatement
      */
     public function bindNullable(string|int $param, mixed $value, int $type = DB::PARAM_STR): bool
     {
-        if ($value=='') {
+        if (in_array($value,$this->equivalentToNull,true)) {
             $r=$this->bindValue($param,null,DB::PARAM_NULL);
         } else {
             $r=$this->bindValue($param,$value,$type);
