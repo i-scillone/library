@@ -4,7 +4,10 @@ use \MyClasses\DB;
 
 class DBStatement extends \PDOStatement
 {
-    /** @var array<int|string> Valori equivalenti a NULL. */
+    /** 
+     * @var array<int|string> Valori equivalenti a NULL. Per difetto c'è solo 
+     * una stringa vuota.
+     */
     private array $equivalentToNull = [''];
 
     /**
@@ -15,7 +18,7 @@ class DBStatement extends \PDOStatement
      * 
      * @param int|string ...$x Elenco dei valori equivalenti a NULL.
      */
-    public function setNull(int|string ...$x): void
+    public function setNullEquiv(int|string ...$x): void
     {
         $this->equivalentToNull = $x;
     }
