@@ -90,4 +90,15 @@ class DBStatement extends \PDOStatement
         }
         return $r;
     }
+    /**
+     * Restituisce l'output di debugDumpParams().
+     *
+     * @return string L'output di debugDumpParams().
+     */
+    public function debugQuery(): string
+    {
+        ob_start();
+        $this->debugDumpParams();
+        return ob_get_clean();
+    }
 }
